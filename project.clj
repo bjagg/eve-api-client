@@ -5,5 +5,5 @@
             :url "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clj-http "3.6.0"]
-                 [cheshire "5.5.0"]])
-  :deploy-repositories {"releases" {:url "https://repo.clojars.org" :creds :gpg}}
+                 [cheshire "5.5.0"]]
+  :deploy-repositories [[ "clojars" {:url "https://repo.clojars.org" :creds :gpg}]])
