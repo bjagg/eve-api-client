@@ -8,4 +8,7 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clj-http "3.6.0"]
                  [cheshire "5.5.0"]]
-  :deploy-repositories [[ "clojars" {:url "https://repo.clojars.org" :creds :gpg}]])
+  :deploy-repositories [[ "clojars" {:url "https://repo.clojars.org"
+                                     :creds :gpg}]
+                        ["releases" :clojars]
+                        ["snapshots" :clojars]])
