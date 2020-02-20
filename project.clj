@@ -1,4 +1,4 @@
-(defproject org.clojars.bjagg/eve-api-client "1.3.8-SNAPSHOT"
+(defproject com.jaggedcode/eve-api-client "1.3.8"
   :description "An OpenAPI for EVE Online -- Clojure Client"
   :url "https://github.com/bjagg/eve-api-client"
   :license {:name "Apache License 2.0"
@@ -9,7 +9,7 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [clj-http "3.6.0"]
                  [cheshire "5.5.0"]]
-  :deploy-repositories [[ "clojars" {:url "https://repo.clojars.org"
+  :deploy-repositories [[ "clojars" {:url "https://clojars.org/repo/"
                                      :creds :gpg}]
                         ["releases" :clojars]
                         ["snapshots" :clojars]]
