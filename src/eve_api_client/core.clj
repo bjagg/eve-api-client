@@ -5,6 +5,8 @@
   (:import (com.fasterxml.jackson.core JsonParseException)
            (java.io File)
            (java.util Date TimeZone)
+           (java.time LocalDate)
+           (java.time.format DateTimeFormatter)
            (java.text SimpleDateFormat)))
 
 (def auth-definitions
@@ -218,8 +220,8 @@
        (map (fn [[k v]] (array-map :name k :content v)))
        vec))
 
-(defn call-api
-  "Call an API by making HTTP request and return its response."
+(defn build-req-opts
+  "Reconstitute opts appropriate for request call from a general set of opts, path and method"
   [path method {:keys [path-params body-param content-types accepts auth-names] :as opts}]
   (let [{:keys [debug]} *api-context*
         {:keys [req-opts query-params header-params form-params]} (auths->opts auth-names)
@@ -239,9 +241,55 @@
                    multipart? (assoc :multipart (-> form-params normalize-params form-params->multipart))
                    (and (not multipart?) (seq form-params)) (assoc :form-params (normalize-params form-params))
                    body-param (assoc :body (serialize body-param content-type))
-                   debug (assoc :debug true :debug-body true))
-        resp (client/request req-opts)]
+                   debug (assoc :debug true :debug-body true))]
+    req-opts))
+
+(defn build-cache-key
+  "Create a cache key based on API values that make each call distinct."
+  [req-opts]
+  (let [{:keys [debug]} *api-context*
+        {:keys [url method query-params]} req-opts
+        key-map {:url url :method method :query-params query-params}]
     (when debug
-      (println "Response:")
-      (println resp))
-    (assoc resp :data (deserialize resp))))
+      (println "Key values: ")
+      (println key-map)
+      (println "Key hash: ")
+      (println (hash key-map)))
+    (hash key-map)))
+
+(def req-cache (atom {}))
+
+(defn parse-expires [s]
+  (LocalDate/parse s (DateTimeFormatter/RFC_1123_DATE_TIME)))
+
+(defn cache-get
+  "For a given req-opt, see if there is a cached value. Do not check if expired"
+  [req-opts]
+  (let [req-key (build-cache-key req-opts)]
+    (get @req-cache req-key)))
+
+(defn cache-put!
+  "Cache the request based on the req-opt map"
+  [req-opts resp]
+  (let [req-key (build-cache-key req-opts)]
+    (swap! req-cache assoc req-key resp)))
+
+(defn call-api
+  "Call an API by making HTTP request and return its response."
+  [path method opts]
+  (let [{:keys [debug]} *api-context*
+        req-opts (build-req-opts path method opts)
+        cached-resp (cache-get req-opts)
+        expires (some-> cached-resp :headers (get "Expires") (parse-expires))
+        not-expired (and expires (.isBefore (LocalDate/now) expires))]
+    (when debug
+      (print "not-expired: ")
+      (println not-expired))
+    (if not-expired
+      cached-resp
+      (let [etag (some-> cached-resp :headers (get "Etag"))
+            req-opts-plus-etag (assoc-in req-opts [:headers "If-None-Match"] etag)
+            resp (client/request req-opts-plus-etag)]
+        (if (= 304 (:status resp))
+          cached-resp
+          (cache-put! req-opts-plus-etag (assoc resp :data (deserialize resp))))))))
