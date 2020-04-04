@@ -5,7 +5,7 @@
   (:import (com.fasterxml.jackson.core JsonParseException)
            (java.io File)
            (java.util Date TimeZone)
-           (java.time LocalDate)
+           (java.time ZonedDateTime)
            (java.time.format DateTimeFormatter)
            (java.text SimpleDateFormat)))
 
@@ -257,25 +257,27 @@
       (println (hash key-map)))
     (hash key-map)))
 
-(def req-cache (atom {}))
+(def req-cache (agent {}))
 
 (defn parse-expires [s]
-  (LocalDate/parse s (DateTimeFormatter/RFC_1123_DATE_TIME)))
+  (ZonedDateTime/parse s (DateTimeFormatter/RFC_1123_DATE_TIME)))
 
 (defn cache-get
   "For a given req-opt, see if there is a cached value. Do not check if expired"
   [req-opts]
-  (let [req-key (build-cache-key req-opts)]
-    (get @req-cache req-key)))
+  (let [token (or (some-> req-opts :query-params (get "token")) 0)
+        req-key (build-cache-key req-opts)]
+    (get-in @req-cache [token req-key])))
 
 (defn cache-put!
   "Cache the request based on the req-opt map"
   [req-opts resp]
-  (let [req-key (build-cache-key req-opts)]
-    (swap! req-cache assoc req-key resp)
+  (let [token (or (some-> req-opts :query-params (get "token")) 0)
+        req-key (build-cache-key req-opts)]
+    (send req-cache assoc-in [token req-key] resp)
     resp))
 
-(defn filter-key-fn
+(defn filter-key-fn ;; TODO: re-purpose in new method to remove expired, non-token responses
   "Create a reduce-kv function that filters the map by the given token"
   [token]
   (fn [m k v]
@@ -288,15 +290,7 @@
   [token]
   (let [{:keys [debug]} *api-context*
         filter-token (filter-key-fn token)]
-    (when debug
-      (println "token to clear: ")
-      (println token)
-      (println "Current cache count ")
-      (println (count @req-cache))
-    (swap! req-cache #(reduce-kv filter-token {} %))
-    (when debug
-      (println "New cache count ")
-      (println (count @req-cache))))))
+    (send req-cache dissoc token)))
 
 (defn call-api
   "Call an API by making HTTP request and return its response."
@@ -305,7 +299,14 @@
         req-opts (build-req-opts path method opts)
         cached-resp (cache-get req-opts)
         expires (some-> cached-resp :headers (get "Expires") (parse-expires))
-        not-expired (and expires (.isBefore (LocalDate/now) expires))]
+        not-expired (and expires (.isBefore (ZonedDateTime/now) expires))]
+    (when debug
+      (print "Expired? ")
+      (print (not not-expired))
+      (print " ")
+      (print (some-> cached-resp :headers (get "Expires")))
+      (print " ")
+      (println (:url req-opts)))
     (if not-expired
       cached-resp
       (let [token (some-> req-opts :query-params (get "token"))
@@ -313,7 +314,7 @@
             req-opts-plus-etag (cond-> req-opts
                                  etag (assoc-in [:headers "If-None-Match"] etag))
             resp (cond-> (client/request req-opts-plus-etag)
-                   token (assoc :token token))]
+                   token (assoc :token token))]  ;; TODO: token no longer needed in response
         (case (:status resp)
           304 cached-resp
           200 (cache-put! req-opts-plus-etag (assoc resp :data (deserialize resp)))
