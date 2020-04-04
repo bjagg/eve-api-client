@@ -272,7 +272,31 @@
   "Cache the request based on the req-opt map"
   [req-opts resp]
   (let [req-key (build-cache-key req-opts)]
-    (swap! req-cache assoc req-key resp)))
+    (swap! req-cache assoc req-key resp)
+    resp))
+
+(defn filter-key-fn
+  "Create a reduce-kv function that filters the map by the given token"
+  [token]
+  (fn [m k v]
+    (if (= (:token v) token)
+      m
+      (assoc m k v))))
+
+(defn cache-clear-by-token
+  "Remove any responses associated with the token parameter"
+  [token]
+  (let [{:keys [debug]} *api-context*
+        filter-token (filter-key-fn token)]
+    (when debug
+      (println "token to clear: ")
+      (println token)
+      (println "Current cache count ")
+      (println (count @req-cache))
+    (swap! req-cache #(reduce-kv filter-token {} %))
+    (when debug
+      (println "New cache count ")
+      (println (count @req-cache))))))
 
 (defn call-api
   "Call an API by making HTTP request and return its response."
@@ -282,14 +306,15 @@
         cached-resp (cache-get req-opts)
         expires (some-> cached-resp :headers (get "Expires") (parse-expires))
         not-expired (and expires (.isBefore (LocalDate/now) expires))]
-    (when debug
-      (print "not-expired: ")
-      (println not-expired))
     (if not-expired
       cached-resp
-      (let [etag (some-> cached-resp :headers (get "Etag"))
-            req-opts-plus-etag (assoc-in req-opts [:headers "If-None-Match"] etag)
-            resp (client/request req-opts-plus-etag)]
-        (if (= 304 (:status resp))
-          cached-resp
-          (cache-put! req-opts-plus-etag (assoc resp :data (deserialize resp))))))))
+      (let [token (some-> req-opts :query-params (get "token"))
+            etag (some-> cached-resp :headers (get "Etag"))
+            req-opts-plus-etag (cond-> req-opts
+                                 etag (assoc-in [:headers "If-None-Match"] etag))
+            resp (cond-> (client/request req-opts-plus-etag)
+                   token (assoc :token token))]
+        (case (:status resp)
+          304 cached-resp
+          200 (cache-put! req-opts-plus-etag (assoc resp :data (deserialize resp)))
+          (println "bad status"))))))
