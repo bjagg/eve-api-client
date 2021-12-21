@@ -1,6 +1,9 @@
 (ns eve-api-client.api.fittings
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn delete-characters-character-id-fittings-fitting-id-with-http-info
   "Delete fitting

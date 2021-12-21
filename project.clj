@@ -1,4 +1,4 @@
-(defproject com.jaggedcode/eve-api-client "1.3.8"
+(defproject com.jaggedcode/eve-api-client "1.10.1"
   :description "An OpenAPI for EVE Online -- Clojure Client"
   :url "https://github.com/bjagg/eve-api-client"
   :license {:name "Apache License 2.0"

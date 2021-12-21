@@ -1,6 +1,9 @@
 (ns eve-api-client.api.calendar
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn get-characters-character-id-calendar-with-http-info
   "List calendar event summaries
@@ -98,7 +101,7 @@ This route is cached for up to 600 seconds"
 
 ---
 
-[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#PUT-/characters/{character_id}/calendar/{event_id}/)"
+This route is cached for up to 5 seconds"
   ([character-id event-id response ] (put-characters-character-id-calendar-event-id-with-http-info character-id event-id response nil))
   ([character-id event-id response {:keys [datasource token ]}]
    (check-required-params character-id event-id response)
@@ -118,7 +121,7 @@ This route is cached for up to 600 seconds"
 
 ---
 
-[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#PUT-/characters/{character_id}/calendar/{event_id}/)"
+This route is cached for up to 5 seconds"
   ([character-id event-id response ] (put-characters-character-id-calendar-event-id character-id event-id response nil))
   ([character-id event-id response optional-params]
    (:data (put-characters-character-id-calendar-event-id-with-http-info character-id event-id response optional-params))))

@@ -1,6 +1,9 @@
 (ns eve-api-client.api.user-interface
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn post-ui-autopilot-waypoint-with-http-info
   "Set Autopilot Waypoint

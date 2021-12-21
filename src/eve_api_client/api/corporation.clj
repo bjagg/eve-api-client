@@ -1,6 +1,9 @@
 (ns eve-api-client.api.corporation
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn get-corporations-corporation-id-with-http-info
   "Get corporation information
@@ -12,7 +15,7 @@ This route is cached for up to 3600 seconds"
   ([corporation-id ] (get-corporations-corporation-id-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match ]}]
    (check-required-params corporation-id)
-   (call-api "/v4/corporations/{corporation_id}/" :get
+   (call-api "/v5/corporations/{corporation_id}/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource }
@@ -42,7 +45,7 @@ This route is cached for up to 3600 seconds"
   ([corporation-id ] (get-corporations-corporation-id-alliancehistory-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match ]}]
    (check-required-params corporation-id)
-   (call-api "/v2/corporations/{corporation_id}/alliancehistory/" :get
+   (call-api "/v3/corporations/{corporation_id}/alliancehistory/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource }
@@ -75,7 +78,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-blueprints-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v2/corporations/{corporation_id}/blueprints/" :get
+   (call-api "/v3/corporations/{corporation_id}/blueprints/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -111,7 +114,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-containers-logs-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v2/corporations/{corporation_id}/containers/logs/" :get
+   (call-api "/v3/corporations/{corporation_id}/containers/logs/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -147,7 +150,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-divisions-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/divisions/" :get
+   (call-api "/v2/corporations/{corporation_id}/divisions/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "token" token }
@@ -183,7 +186,7 @@ Requires one of the following EVE corporation role(s): Factory_Manager"
   ([corporation-id ] (get-corporations-corporation-id-facilities-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/facilities/" :get
+   (call-api "/v2/corporations/{corporation_id}/facilities/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "token" token }
@@ -216,7 +219,7 @@ This route is cached for up to 3600 seconds"
   ([corporation-id ] (get-corporations-corporation-id-icons-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/icons/" :get
+   (call-api "/v2/corporations/{corporation_id}/icons/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource }
@@ -246,7 +249,7 @@ This route is cached for up to 3600 seconds"
   ([corporation-id ] (get-corporations-corporation-id-medals-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/medals/" :get
+   (call-api "/v2/corporations/{corporation_id}/medals/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -279,7 +282,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-medals-issued-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/medals/issued/" :get
+   (call-api "/v2/corporations/{corporation_id}/medals/issued/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -312,7 +315,7 @@ This route is cached for up to 3600 seconds"
   ([corporation-id ] (get-corporations-corporation-id-members-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
-   (call-api "/v3/corporations/{corporation_id}/members/" :get
+   (call-api "/v4/corporations/{corporation_id}/members/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "token" token }
@@ -345,7 +348,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-members-limit-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/members/limit/" :get
+   (call-api "/v2/corporations/{corporation_id}/members/limit/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "token" token }
@@ -381,7 +384,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-members-titles-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/members/titles/" :get
+   (call-api "/v2/corporations/{corporation_id}/members/titles/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "token" token }
@@ -417,7 +420,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-membertracking-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/membertracking/" :get
+   (call-api "/v2/corporations/{corporation_id}/membertracking/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "token" token }
@@ -450,7 +453,7 @@ This route is cached for up to 3600 seconds"
   ([corporation-id ] (get-corporations-corporation-id-roles-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/roles/" :get
+   (call-api "/v2/corporations/{corporation_id}/roles/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "token" token }
@@ -483,7 +486,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-roles-history-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/roles/history/" :get
+   (call-api "/v2/corporations/{corporation_id}/roles/history/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -552,7 +555,7 @@ This route is cached for up to 3600 seconds"
   ([corporation-id ] (get-corporations-corporation-id-standings-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/standings/" :get
+   (call-api "/v2/corporations/{corporation_id}/standings/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -585,7 +588,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-starbases-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/starbases/" :get
+   (call-api "/v2/corporations/{corporation_id}/starbases/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -621,7 +624,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id starbase-id system-id ] (get-corporations-corporation-id-starbases-starbase-id-with-http-info corporation-id starbase-id system-id nil))
   ([corporation-id starbase-id system-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id starbase-id system-id)
-   (call-api "/v1/corporations/{corporation_id}/starbases/{starbase_id}/" :get
+   (call-api "/v2/corporations/{corporation_id}/starbases/{starbase_id}/" :get
              {:path-params   {"corporation_id" corporation-id "starbase_id" starbase-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "system_id" system-id "token" token }
@@ -657,7 +660,7 @@ Requires one of the following EVE corporation role(s): Station_Manager"
   ([corporation-id ] (get-corporations-corporation-id-structures-with-http-info corporation-id nil))
   ([corporation-id {:keys [accept-language datasource if-none-match language page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v3/corporations/{corporation_id}/structures/" :get
+   (call-api "/v4/corporations/{corporation_id}/structures/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"Accept-Language" accept-language "If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "language" language "page" page "token" token }
@@ -693,7 +696,7 @@ Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-titles-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
-   (call-api "/v1/corporations/{corporation_id}/titles/" :get
+   (call-api "/v2/corporations/{corporation_id}/titles/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "token" token }
@@ -725,7 +728,7 @@ Requires one of the following EVE corporation role(s): Director"
 This route expires daily at 11:05"
   ([] (get-corporations-npccorps-with-http-info nil))
   ([{:keys [datasource if-none-match ]}]
-   (call-api "/v1/corporations/npccorps/" :get
+   (call-api "/v2/corporations/npccorps/" :get
              {:path-params   {}
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource }

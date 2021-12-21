@@ -1,6 +1,9 @@
 (ns eve-api-client.api.sovereignty
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn get-sovereignty-campaigns-with-http-info
   "List sovereignty campaigns

@@ -1,6 +1,9 @@
 (ns eve-api-client.api.assets
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn get-characters-character-id-assets-with-http-info
   "Get character assets
@@ -8,17 +11,11 @@
 
 ---
 
-This route is cached for up to 3600 seconds
-
----
-Warning: This route has an upgrade available
-
----
-[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/characters/{character_id}/assets/)"
+This route is cached for up to 3600 seconds"
   ([character-id ] (get-characters-character-id-assets-with-http-info character-id nil))
   ([character-id {:keys [datasource if-none-match page token ]}]
    (check-required-params character-id)
-   (call-api "/v3/characters/{character_id}/assets/" :get
+   (call-api "/v5/characters/{character_id}/assets/" :get
              {:path-params   {"character_id" character-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -33,13 +30,7 @@ Warning: This route has an upgrade available
 
 ---
 
-This route is cached for up to 3600 seconds
-
----
-Warning: This route has an upgrade available
-
----
-[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/characters/{character_id}/assets/)"
+This route is cached for up to 3600 seconds"
   ([character-id ] (get-characters-character-id-assets character-id nil))
   ([character-id optional-params]
    (:data (get-characters-character-id-assets-with-http-info character-id optional-params))))
@@ -53,17 +44,11 @@ Warning: This route has an upgrade available
 This route is cached for up to 3600 seconds
 
 ---
-Requires one of the following EVE corporation role(s): Director
-
----
-Warning: This route has an upgrade available
-
----
-[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/corporations/{corporation_id}/assets/)"
+Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-assets-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match page token ]}]
    (check-required-params corporation-id)
-   (call-api "/v3/corporations/{corporation_id}/assets/" :get
+   (call-api "/v5/corporations/{corporation_id}/assets/" :get
              {:path-params   {"corporation_id" corporation-id }
               :header-params {"If-None-Match" if-none-match }
               :query-params  {"datasource" datasource "page" page "token" token }
@@ -81,13 +66,7 @@ Warning: This route has an upgrade available
 This route is cached for up to 3600 seconds
 
 ---
-Requires one of the following EVE corporation role(s): Director
-
----
-Warning: This route has an upgrade available
-
----
-[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/corporations/{corporation_id}/assets/)"
+Requires one of the following EVE corporation role(s): Director"
   ([corporation-id ] (get-corporations-corporation-id-assets corporation-id nil))
   ([corporation-id optional-params]
    (:data (get-corporations-corporation-id-assets-with-http-info corporation-id optional-params))))

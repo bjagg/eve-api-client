@@ -1,6 +1,9 @@
 (ns eve-api-client.api.planetary-interaction
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn get-characters-character-id-planets-with-http-info
   "Get colonies
@@ -36,15 +39,13 @@ This route is cached for up to 600 seconds"
   "Get colony layout
   Returns full details on the layout of a single planetary colony, including links, pins and routes. Note: Planetary information is only recalculated when the colony is viewed through the client. Information will not update until this criteria is met.
 
----
-
-This route is cached for up to 600 seconds"
+---"
   ([character-id planet-id ] (get-characters-character-id-planets-planet-id-with-http-info character-id planet-id nil))
-  ([character-id planet-id {:keys [datasource if-none-match token ]}]
+  ([character-id planet-id {:keys [datasource token ]}]
    (check-required-params character-id planet-id)
    (call-api "/v3/characters/{character_id}/planets/{planet_id}/" :get
              {:path-params   {"character_id" character-id "planet_id" planet-id }
-              :header-params {"If-None-Match" if-none-match }
+              :header-params {}
               :query-params  {"datasource" datasource "token" token }
               :form-params   {}
               :content-types ["application/json"]
@@ -55,9 +56,7 @@ This route is cached for up to 600 seconds"
   "Get colony layout
   Returns full details on the layout of a single planetary colony, including links, pins and routes. Note: Planetary information is only recalculated when the colony is viewed through the client. Information will not update until this criteria is met.
 
----
-
-This route is cached for up to 600 seconds"
+---"
   ([character-id planet-id ] (get-characters-character-id-planets-planet-id character-id planet-id nil))
   ([character-id planet-id optional-params]
    (:data (get-characters-character-id-planets-planet-id-with-http-info character-id planet-id optional-params))))

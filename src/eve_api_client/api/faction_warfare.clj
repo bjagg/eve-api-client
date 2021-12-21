@@ -38,10 +38,7 @@ This route expires daily at 11:05"
 
 ---
 
-This route expires daily at 11:05
-
----
-[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/corporations/{corporation_id}/fw/stats/)"
+This route expires daily at 11:05"
   ([corporation-id ] (get-corporations-corporation-id-fw-stats-with-http-info corporation-id nil))
   ([corporation-id {:keys [datasource if-none-match token ]}]
    (check-required-params corporation-id)
@@ -60,10 +57,7 @@ This route expires daily at 11:05
 
 ---
 
-This route expires daily at 11:05
-
----
-[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/corporations/{corporation_id}/fw/stats/)"
+This route expires daily at 11:05"
   ([corporation-id ] (get-corporations-corporation-id-fw-stats corporation-id nil))
   ([corporation-id optional-params]
    (:data (get-corporations-corporation-id-fw-stats-with-http-info corporation-id optional-params))))

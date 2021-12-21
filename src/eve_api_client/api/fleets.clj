@@ -1,6 +1,9 @@
 (ns eve-api-client.api.fleets
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn delete-fleets-fleet-id-members-member-id-with-http-info
   "Kick fleet member

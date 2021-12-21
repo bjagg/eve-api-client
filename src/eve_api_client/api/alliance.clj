@@ -1,6 +1,9 @@
 (ns eve-api-client.api.alliance
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn get-alliances-with-http-info
   "List all alliances
@@ -97,7 +100,10 @@ This route is cached for up to 3600 seconds"
 
 ---
 
-This route expires daily at 11:05"
+This route expires daily at 11:05
+
+---
+[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/alliances/{alliance_id}/icons/)"
   ([alliance-id ] (get-alliances-alliance-id-icons-with-http-info alliance-id nil))
   ([alliance-id {:keys [datasource if-none-match ]}]
    (check-required-params alliance-id)
@@ -116,7 +122,10 @@ This route expires daily at 11:05"
 
 ---
 
-This route expires daily at 11:05"
+This route expires daily at 11:05
+
+---
+[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/alliances/{alliance_id}/icons/)"
   ([alliance-id ] (get-alliances-alliance-id-icons alliance-id nil))
   ([alliance-id optional-params]
    (:data (get-alliances-alliance-id-icons-with-http-info alliance-id optional-params))))

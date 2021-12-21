@@ -1,6 +1,9 @@
 (ns eve-api-client.api.wallet
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn get-characters-character-id-wallet-with-http-info
   "Get a character's wallet balance
@@ -8,7 +11,10 @@
 
 ---
 
-This route is cached for up to 120 seconds"
+This route is cached for up to 120 seconds
+
+---
+[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/characters/{character_id}/wallet/)"
   ([character-id ] (get-characters-character-id-wallet-with-http-info character-id nil))
   ([character-id {:keys [datasource if-none-match token ]}]
    (check-required-params character-id)
@@ -27,7 +33,10 @@ This route is cached for up to 120 seconds"
 
 ---
 
-This route is cached for up to 120 seconds"
+This route is cached for up to 120 seconds
+
+---
+[Diff of the upcoming changes](https://esi.evetech.net/diff/latest/dev/#GET-/characters/{character_id}/wallet/)"
   ([character-id ] (get-characters-character-id-wallet character-id nil))
   ([character-id optional-params]
    (:data (get-characters-character-id-wallet-with-http-info character-id optional-params))))

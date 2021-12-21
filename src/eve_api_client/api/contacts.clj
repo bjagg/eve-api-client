@@ -1,6 +1,9 @@
 (ns eve-api-client.api.contacts
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-api-client.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn delete-characters-character-id-contacts-with-http-info
   "Delete contacts
