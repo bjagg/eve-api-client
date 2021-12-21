@@ -1,6 +1,9 @@
 (ns eve-api-client.api.faction-warfare
-  (:require [eve-api-client.core :refer [call-api check-required-params with-collection-format]])
-  (:import (java.io File)))
+  (:require
+    [eve-api-client.core :refer [call-api]]
+    [eve-swagger-interface.core :refer [check-required-params with-collection-format]])
+  (:import
+    (java.io File)))
 
 (defn get-characters-character-id-fw-stats-with-http-info
   "Overview of a character involved in faction warfare

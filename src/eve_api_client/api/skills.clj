@@ -1,7 +1,7 @@
 (ns eve-api-client.api.skills
   (:require
     [eve-api-client.core :refer [call-api]]
-    [eve-api-client.core :refer [check-required-params with-collection-format]])
+    [eve-swagger-interface.core :refer [check-required-params with-collection-format]])
   (:import
     (java.io File)))
 
