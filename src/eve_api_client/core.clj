@@ -312,10 +312,12 @@
       (let [token (some-> req-opts :query-params (get "token"))
             etag (some-> cached-resp :headers (get "Etag"))
             req-opts-plus-etag (cond-> req-opts
-                                 etag (assoc-in [:headers "If-None-Match"] etag))
-            resp (cond-> (client/request req-opts-plus-etag)
-                   token (assoc :token token))]  ;; TODO: token no longer needed in response
-        (case (:status resp)
-          304 cached-resp
-          200 (cache-put! req-opts-plus-etag (assoc resp :data (deserialize resp)))
-          (println "bad status"))))))
+                                 etag (assoc-in [:headers "If-None-Match"] etag))]
+        (try
+          (let [resp (client/request req-opts-plus-etag)]
+            #_(println (:status resp))
+            (case (:status resp)
+              304 cached-resp
+              200 (cache-put! req-opts-plus-etag (assoc resp :data (deserialize resp)))
+              (println (str  "bad status: " (:status resp)))))
+          (catch Exception e (println e)))))))
