@@ -3,7 +3,7 @@
     [cheshire.core :refer [generate-string parse-string]]
     [clj-http.client :as client]
     [clojure.string :as str]
-    [eve-swagger-interface.core :refer :all])
+    [eve-swagger-interface.core :refer :all :exclude [call-api]])
   (:import
     (com.fasterxml.jackson.core JsonParseException)
     (java.io File)
