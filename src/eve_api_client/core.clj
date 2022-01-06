@@ -3,7 +3,8 @@
     [cheshire.core :refer [generate-string parse-string]]
     [clj-http.client :as client]
     [clojure.string :as str]
-    [eve-swagger-interface.core :refer :all :exclude [call-api]])
+    [eve-swagger-interface.core :refer :all :exclude [call-api]]
+    [slingshot.slingshot :refer [throw+ try+]])
   (:import
     (com.fasterxml.jackson.core JsonParseException)
     (java.io File)
@@ -104,11 +105,12 @@
       (let [etag (some-> cached-resp :headers (get "Etag"))
             req-opts-plus-etag (cond-> req-opts
                                  etag (assoc-in [:headers "If-None-Match"] etag))]
-        (try
+        (try+
           (let [resp (client/request req-opts-plus-etag)]
             #_(println (:status resp))
             (case (:status resp)
               304 cached-resp
               200 (cache-put! req-opts-plus-etag (assoc resp :data (deserialize resp)))
               (println (str  "bad status: " (:status resp)))))
-          (catch Exception e (println e)))))))
+          (catch Object {:keys [status reason-phrase]}
+            (println (str "bad status: " status ", reason: " reason-phrase))))))))
